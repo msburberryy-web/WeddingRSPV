@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>ご出席返信フォーム (RSVP)</title>
+
+<style>
+  body {
+    font-family: 'Hiragino Sans','Noto Sans JP', sans-serif;
+    background: linear-gradient(135deg, #fff9f6, #ffeae1);
+    padding: 40px;
+    color: #444;
+  }
+
+  .container {
+    max-width: 540px;
+    margin: auto;
+    background: white;
+    padding: 30px 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #e58b9c;
+    font-size: 26px;
+    letter-spacing: 1px;
+  }
+
+  label {
+    display: block;
+    margin-top: 18px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fffafa;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    height: 100px;
+    resize: vertical;
+  }
+
+  button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 14px;
+    background: #ff8fb1;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #ff7aa2;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>ご出席確認フォーム</h2>
+
+  <form id="rsvpForm">
+
+    <label>お名前</label>
+    <input type="text" name="name" required>
+
+    <label>ふりがな</label>
+    <input type="text" name="furigana" required>
+
+    <label>メールアドレス</label>
+    <input type="email" name="email" required>
+
+    <label>ご出席について</label>
+    <select name="attending" required>
+      <option value="">選択してください</option>
+      <option value="出席">出席</option>
+      <option value="欠席">欠席</option>
+    </select>
+
+    <label>ご同伴者人数</label>
+    <select name="guests">
+      <option value="0">0名</option>
+      <option value="1">1名</option>
+      <option value="2">2名</option>
+      <option value="3">3名</option>
+    </select>
+
+    <label>アレルギーはございますか？</label>
+    <textarea name="allergy" placeholder="例：卵、乳製品、甲殻類など"></textarea>
+
+    <label>メッセージ（任意）</label>
+    <textarea name="message" placeholder="一言メッセージがあればご記入ください"></textarea>
+
+    <button type="submit">送信する</button>
+  </form>
+</div>
+
+<script>
+document.getElementById("rsvpForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+
+  const data = {
+    name: form.name.value,
+    furigana: form.furigana.value,
+    email: form.email.value,
+    attending: form.attending.value,
+    guests: form.guests.value,
+    allergy: form.allergy.value,
+    message: form.message.value
+  };
+
+  fetch("YOUR_WEB_APP_URL_HERE", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(r => r.json())
+  .then(res => {
+    alert("ご回答ありがとうございます。送信が完了しました。");
+    form.reset();
+  })
+  .catch(err => alert("送信中にエラーが発生しました。しばらくしてから再度お試しください。"));
+});
+</script>
+
+</body>
+</html>

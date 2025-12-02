@@ -14,7 +14,15 @@
         overflow-x: hidden;
     }
 
-    /* Background pattern */
+    .hero-title {
+        text-align: center;
+        font-size: 34px;
+        margin-top: 30px;
+        color: #d4a948;
+        text-shadow: 0 0 4px rgba(255,215,0,0.4);
+        letter-spacing: 1px;
+    }
+
     .background {
         background: linear-gradient(135deg, #fff6d9, #d9eaff);
         min-height: 100vh;
@@ -24,7 +32,6 @@
         align-items: flex-start;
     }
 
-    /* Envelope wrapper */
     .envelope-container {
         width: 95%;
         max-width: 480px;
@@ -32,23 +39,20 @@
         text-align: center;
     }
 
-    /* Envelope body */
     .envelope {
         width: 100%;
-        background: url('https://i.imgur.com/iDjW3WZ.png'); /* Gold foil texture */
+        background: url('https://raw.githubusercontent.com/ChatGPTAssets/envelope/main/envelope-body-texture.png');
         background-size: cover;
         border-radius: 16px;
-        padding: 0;
         position: relative;
         overflow: hidden;
         box-shadow: 0 8px 30px rgba(0,0,0,0.15);
     }
 
-    /* Envelope flap (top) */
     .envelope-flap {
         width: 100%;
         height: 180px;
-        background: url('https://i.imgur.com/J5pJ7zU.png'); /* Gold foil flap texture */
+        background: url('https://raw.githubusercontent.com/ChatGPTAssets/envelope/main/envelope-flap-gold.png');
         background-size: cover;
         background-position: center;
         border-radius: 0 0 30px 30px;
@@ -61,9 +65,9 @@
         transform: rotateX(180deg);
     }
 
-    /* Letter inside */
     .letter {
-        background: white;
+        background: url('https://raw.githubusercontent.com/ChatGPTAssets/envelope/main/letter-bg.png');
+        background-size: cover;
         width: 100%;
         padding: 28px;
         box-sizing: border-box;
@@ -79,18 +83,12 @@
         opacity: 1;
     }
 
-    /* Title inside letter */
     .letter h1 {
         margin: 0;
         font-size: 26px;
-        margin-bottom: 10px;
         color: #d4a948;
-        text-shadow: 0 0 3px rgba(255,215,0,0.4);
-    }
-
-    .letter p {
-        font-size: 16px;
-        color: #666;
+        text-align: center;
+        margin-bottom: 10px;
     }
 
     iframe {
@@ -101,7 +99,30 @@
         margin-top: 20px;
     }
 
-    /* Mobile */
+    /* Section Styles Below Letter */
+    .section {
+        width: 95%;
+        max-width: 550px;
+        margin: 60px auto;
+        padding: 25px;
+        border-radius: 16px;
+        background: white;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        margin-top: 0;
+        color: #d4a948;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .section p, .section li {
+        font-size: 16px;
+        color: #666;
+        line-height: 1.6;
+    }
+
     @media (max-width: 480px) {
         .letter h1 { font-size: 22px; }
         iframe { height: 700px; }
@@ -111,31 +132,58 @@
 </head>
 <body>
 
+<h1 class="hero-title">You Are Invited</h1>
+
 <div class="background">
     <div class="envelope-container" id="envelopeWrapper">
-        
-        <!-- Envelope -->
         <div class="envelope" id="envelope">
             <div class="envelope-flap" id="flap"></div>
 
-            <!-- Letter that slides out -->
             <div class="letter" id="letter">
                 <h1>RSVP</h1>
-                <p>Please kindly fill in your attendance details.</p>
 
-                <!-- AUTO-LOADED RSVP FORM -->
                 <iframe 
-                    id="rsvpFrame"
-                    <!-- src="https://YOUR_USERNAME.github.io/YOUR_REPO/rsvp.html" --> 
-                    src="msburberryy-web/WeddingRSPV/rspv.html"
+                    src="https://msburberryy-web.github.io/WeddingRSPV/rspv.html">
                 </iframe>
-
             </div>
         </div>
     </div>
 </div>
 
-<!-- Envelope open sound -->
+<!-- Sections under the envelope -->
+<div class="section">
+    <h2>👩‍❤️‍👨 Bride & Groom</h2>
+    <p>
+        Welcome to our wedding page.  
+        We are excited to share our special day with the people we love.  
+        Thank you for taking the time to respond and celebrate with us.
+    </p>
+</div>
+
+<div class="section">
+    <h2>📅 Wedding Timeline</h2>
+    <ul>
+        <li><strong>3:00 PM</strong> — Guest Arrival</li>
+        <li><strong>3:30 PM</strong> — Ceremony Begins</li>
+        <li><strong>4:30 PM</strong> — Couple Photos & Family Photos</li>
+        <li><strong>5:00 PM</strong> — Reception Starts</li>
+        <li><strong>7:00 PM</strong> — Cake Cutting</li>
+        <li><strong>8:00 PM</strong> — Couple Send-off</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>📜 Wedding Rules</h2>
+    <ul>
+        <li>Please arrive on time for the ceremony.</li>
+        <li>No flash photography during the vow exchange.</li>
+        <li>Respect the dress code and atmosphere.</li>
+        <li>Kindly follow staff instructions at the venue.</li>
+        <li>Children are welcome, but please supervise them.</li>
+    </ul>
+</div>
+
+<!-- Envelope opening sound -->
 <audio id="openSound">
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7eafdd37a2.mp3?filename=paper-rip-6981.mp3" type="audio/mpeg">
 </audio>
@@ -150,11 +198,6 @@
         sound.play();
         window.scrollTo({ top: 200, behavior: "smooth" });
     });
-
-    // If you want envelope to open automatically on scroll:
-    // window.addEventListener("scroll", () => {
-    //     if (window.scrollY > 50) envelope.classList.add("open");
-    // });
 </script>
 
 </body>

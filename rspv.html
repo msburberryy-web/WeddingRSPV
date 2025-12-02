@@ -140,11 +140,9 @@
 </div>
 
 <script>
-document.getElementById("rsvpForm").addEventListener("submit", function(e) {
+document.getElementById("rsvpForm").addEventListener("submit", async function(e) {
   e.preventDefault();
-
   const form = e.target;
-
   const data = {
     name: form.name.value,
     furigana: form.furigana.value,
@@ -153,29 +151,40 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e) {
     guests: form.guests.value,
     allergy: form.allergy.value,
     message: form.message.value,
-
-    // Security fields
-    secret: "amoreRSPVmeme", // MUST match script
+    secret: "amoreRSPVmeme",      // <--- あなたのキーに置き換える
     timestamp: Date.now(),
     origin: window.location.origin
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbxOBJqq5XFtQxOn8WO2pbMUvUXQjxZF5bJR6OjrZMM3b-bKB6rh5foELZn8_I-v8T1G/exec", {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-  .then(r => r.json())
-  .then(res => {
-    if (res.status === "success") {
-      alert("ご回答ありがとうございます。送信が完了しました。");
-      form.reset();
-    } else {
-      alert("エラー：" + res.message);
-    }
-  })
-  .catch(err => alert("送信エラーが発生しました。"));
-});
+  try {
+    const res = await fetch("https://script.google.com/macros/s/AKfycbxOBJqq5XFtQxOn8WO2pbMUvUXQjxZF5bJR6OjrZMM3b-bKB6rh5foELZn8_I-v8T1G/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
+    const text = await res.text();        // まずは生テキストで確認
+    console.log("HTTP status:", res.status);
+    console.log("Response text:", text);
+
+    // try to parse JSON if possible
+    try {
+      const json = JSON.parse(text);
+      if (json.status === "success") {
+        alert("ご回答ありがとうございます。送信が完了しました。");
+        form.reset();
+      } else {
+        alert("送信エラー: " + (json.message || JSON.stringify(json)));
+      }
+    } catch (parseErr) {
+      alert("サーバー応答がJSONではありません。コンソール確認。");
+    }
+
+  } catch (err) {
+    console.error("Fetch error:", err);
+    alert("送信中にエラーが発生しました。ネットワークまたはサーバーの問題です。コンソールを確認してください。");
+  }
+});
 </script>
 
 </body>

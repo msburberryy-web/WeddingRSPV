@@ -72,6 +72,33 @@
 </head>
 
 <body>
+<!-- Canva Invitation Embed -->
+<div style="
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-top: 125%;
+  box-shadow: 0 2px 8px rgba(63,69,81,0.16);
+  margin-top: 1.6em;
+  margin-bottom: 2em;
+  overflow: hidden;
+  border-radius: 12px;
+">
+  <iframe
+    loading="lazy"
+    style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none;"
+    src="https://www.canva.com/design/DAG6XQKYsa8/iWDPPo0OoQMzFpT6aro_mw/watch?embed"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<!-- Optional link to Canva -->
+<p style="text-align:center; font-size:13px; margin-top:-10px; opacity:0.6;">
+  <a href="https://www.canva.com/design/DAG6XQKYsa8/iWDPPo0OoQMzFpT6aro_mw/watch?utm_content=DAG6XQKYsa8&utm_campaign=designshare&utm_medium=embeds&utm_source=link"
+     target="_blank" rel="noopener" style="color:#999; text-decoration:none;">
+    View on Canva
+  </a>
+</p>
 
 <div class="container">
   <h2>ご出席確認フォーム</h2>
@@ -125,20 +152,30 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e) {
     attending: form.attending.value,
     guests: form.guests.value,
     allergy: form.allergy.value,
-    message: form.message.value
+    message: form.message.value,
+
+    // Security fields
+    secret: "amoreRSPVmeme", // MUST match script
+    timestamp: Date.now(),
+    origin: window.location.origin
   };
 
-  fetch("YOUR_WEB_APP_URL_HERE", {
+  fetch("https://script.google.com/macros/s/AKfycbxOBJqq5XFtQxOn8WO2pbMUvUXQjxZF5bJR6OjrZMM3b-bKB6rh5foELZn8_I-v8T1G/exec", {
     method: "POST",
     body: JSON.stringify(data)
   })
   .then(r => r.json())
   .then(res => {
-    alert("ご回答ありがとうございます。送信が完了しました。");
-    form.reset();
+    if (res.status === "success") {
+      alert("ご回答ありがとうございます。送信が完了しました。");
+      form.reset();
+    } else {
+      alert("エラー：" + res.message);
+    }
   })
-  .catch(err => alert("送信中にエラーが発生しました。しばらくしてから再度お試しください。"));
+  .catch(err => alert("送信エラーが発生しました。"));
 });
+
 </script>
 
 </body>
